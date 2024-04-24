@@ -2,7 +2,6 @@ package com.dauphine.blogger.controllers;
 
 import com.dauphine.blogger.dto.CreationPostRequest;
 import com.dauphine.blogger.dto.UpdatePostRequest;
-import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.models.Post;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +39,7 @@ public class PostController {
     public String updateTitle(@Parameter(description = "Give the new title of the post")
                              @PathVariable UUID id,
                          @RequestBody UpdatePostRequest postRequest){
-        //TO DO
+        //TODO
         return "Update post '%s' with title '%s'".formatted(id, postRequest.getTitle());
     }
 
@@ -52,7 +51,7 @@ public class PostController {
     public String updateContent(@Parameter(description = "Give the new content of the post")
                          @PathVariable UUID id,
                          @RequestBody UpdatePostRequest postRequest){
-        //TO DO
+        //TODO
         return "Update post '%s' with content '%s'".formatted(id, postRequest.getContent());
     }
 
@@ -64,7 +63,7 @@ public class PostController {
     public String updateCategoryId(@Parameter(description = "Give the new category id of the post")
                                 @PathVariable UUID id,
                                 @RequestBody UpdatePostRequest postRequest){
-        //TO DO
+        //TODO
         return "Update post '%s' with category_id '%s'".formatted(id, postRequest.getCategory_id());
     }
 
@@ -76,7 +75,7 @@ public class PostController {
     public String delete(
             @Parameter(description = "Give the id of the post to delete")
             @PathVariable UUID id){
-        // TO DO
+        // TODO
         return "Delete post '%s' with the title".formatted(id,"");
     }
 
@@ -86,7 +85,7 @@ public class PostController {
             description = "Returns a list of all posts"
     )
     public List<Post> retrieveAllPostByDate(@RequestParam("date") String date) {
-        //TO DO
+        //TODO
         return temporaryPosts;
     }
 
@@ -99,7 +98,7 @@ public class PostController {
             @Parameter (description="Category id wanted")
             @PathVariable UUID category_id
     ) {
-        //TO DO
+        //TODO
         return temporaryPosts;
     }
 }

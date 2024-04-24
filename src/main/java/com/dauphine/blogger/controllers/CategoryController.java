@@ -62,7 +62,7 @@ public class CategoryController {
             @Parameter(description = "Give the new title of the category")
             @PathVariable UUID id,
             @RequestBody UpdateCategoryRequest categoryRequest){
-        //TO DO
+        //TODO
         return "Update category '%s' with title '%s'".formatted(id, categoryRequest.getTitle());
     }
 
@@ -74,7 +74,7 @@ public class CategoryController {
     public String delete(
             @Parameter(description = "Give the id of the category to delete")
             @PathVariable UUID id){
-        // TO DO
+        // TODO
         return "Delete category '%s' with the title".formatted(id,"");
     }
 }
