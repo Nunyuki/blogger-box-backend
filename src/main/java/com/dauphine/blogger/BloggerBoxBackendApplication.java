@@ -21,5 +21,4 @@ public class BloggerBoxBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BloggerBoxBackendApplication.class, args);
 	}
-
 }
