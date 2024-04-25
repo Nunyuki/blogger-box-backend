@@ -1,21 +1,39 @@
 package com.dauphine.blogger.models;
 
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
 
+@Entity
+@Table(name="post")
 public class Post {
+    @Id
+    @Column(name="id")
     private UUID id;
-    private String title;
-    private String content;
-    private Timestamp created_date;
-    private UUID categoryId;
 
-    public Post(UUID id, String title, String content, UUID categoryId){
+    @Column(name = "title")
+    private String title;
+
+    @Column(name="content")
+    private String content;
+
+    @Column(name="created_date")
+    private Timestamp created_date;
+
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private Category category;
+
+    public Post(){
+
+    }
+    public Post(UUID id, String title, String content, Category category){
         this.id = id;
         this.title = title;
         this.content = content;
-        this.categoryId = categoryId;
+        this.category = category;
         setCreated_date();
     }
     public UUID getId() {
@@ -51,11 +69,11 @@ public class Post {
 
     }
 
-    public UUID getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryId(Category categoryId) {
+        this.category = categoryId;
     }
 }

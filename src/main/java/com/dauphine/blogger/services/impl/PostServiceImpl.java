@@ -26,10 +26,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> retrieveAllPostByCategory(UUID categoryId) {
+    public List<Post> retrieveAllPostByCategory(Category category) {
         List<Post> postByCategory = new ArrayList<>();
         for(Post p:temporaryPost){
-            if (p.getCategoryId()==categoryId){
+            if (p.getCategory()==category){
                 postByCategory.add(p);
             }
         }

@@ -1,11 +1,25 @@
 package com.dauphine.blogger.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.util.UUID;
 
+@Entity
+@Table(name="category")
 public class Category {
+    @Id
+    @Column(name = "id")
     private UUID id;
+
+    @Column(name = "tite")
     private String title;
 
+    public Category(){
+
+    }
     public Category(UUID id) {
         this.id = id;
     }
