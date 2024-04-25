@@ -3,6 +3,8 @@ package com.dauphine.blogger.controllers;
 import com.dauphine.blogger.dto.CreationPostRequest;
 import com.dauphine.blogger.dto.UpdatePostRequest;
 import com.dauphine.blogger.models.Post;
+import com.dauphine.blogger.services.CategoryService;
+import com.dauphine.blogger.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
@@ -14,57 +16,35 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/v1/posts")
 public class PostController {
+    private final PostService service;
 
-    List<Post> temporaryPosts = new ArrayList<>();
+    public PostController(PostService service){
+
+        this.service = service;
+    }
 
     @PostMapping("/")
     @Operation(
             summary = "Create a new post endpoint",
             description = "Create a new post '{title}' by request body"
     )
-    public String create(
+    public Post createPost(
             @Parameter(description = "Title of the post")
             @RequestBody CreationPostRequest postRequest) {
-            Post post = new Post();
 
-        //TODO
-        return "Create new post with \nid: '%s'\ntitle: '%s'\ncategory_id: '%s'".formatted(post.getId(),post.getTitle(),post.getCategory_id());
-    }
+        return service.createPost(postRequest.getTitle(),postRequest.getContent(),postRequest.getCategoryId());
+   }
 
-    @PatchMapping("/{id}/title")
+    @PatchMapping("/{id}/")
     @Operation(
-            summary = "Update post's title endpoint",
-            description = "Update '{title}' by request body"
+            summary = "Update post's endpoint",
+            description = "Update by request body"
     )
-    public String updateTitle(@Parameter(description = "Give the new title of the post")
+    public Post update(@Parameter(description = "Give the new title of the post")
                              @PathVariable UUID id,
                          @RequestBody UpdatePostRequest postRequest){
         //TODO
-        return "Update post '%s' with title '%s'".formatted(id, postRequest.getTitle());
-    }
-
-    @PatchMapping("/{id}/content")
-    @Operation(
-            summary = "Update post's content endpoint",
-            description = "Update '{content}' by request body"
-    )
-    public String updateContent(@Parameter(description = "Give the new content of the post")
-                         @PathVariable UUID id,
-                         @RequestBody UpdatePostRequest postRequest){
-        //TODO
-        return "Update post '%s' with content '%s'".formatted(id, postRequest.getContent());
-    }
-
-    @PatchMapping("/{id}/category_id")
-    @Operation(
-            summary = "Update post's category id endpoint",
-            description = "Update '{category_id}' by request body"
-    )
-    public String updateCategoryId(@Parameter(description = "Give the new category id of the post")
-                                @PathVariable UUID id,
-                                @RequestBody UpdatePostRequest postRequest){
-        //TODO
-        return "Update post '%s' with category_id '%s'".formatted(id, postRequest.getCategory_id());
+        return service.update(id,postRequest.getTitle(),postRequest.getContent());
     }
 
     @DeleteMapping("/{id}")
@@ -72,11 +52,10 @@ public class PostController {
             summary = "Delete post endpoint",
             description = "Delete a post by '{id}'"
     )
-    public String delete(
+    public void delete(
             @Parameter(description = "Give the id of the post to delete")
             @PathVariable UUID id){
-        // TODO
-        return "Delete post '%s' with the title".formatted(id,"");
+        service.delete(id);
     }
 
     @GetMapping("/")
@@ -85,20 +64,18 @@ public class PostController {
             description = "Returns a list of all posts"
     )
     public List<Post> retrieveAllPostByDate(@RequestParam("date") String date) {
-        //TODO
-        return temporaryPosts;
+        return service.retrieveAllPostByDate();
     }
 
-    @GetMapping("/{category_id}/posts")
+    @GetMapping("/{categoryId}/posts")
     @Operation(
             summary = "Retrieve all posts ordered by date endpoint",
             description = "Returns a list of all posts"
     )
     public List<Post> retrieveAllPostByCategory(
             @Parameter (description="Category id wanted")
-            @PathVariable UUID category_id
+            @PathVariable UUID categoryId
     ) {
-        //TODO
-        return temporaryPosts;
+        return service.retrieveAllPostByCategory(categoryId);
     }
 }

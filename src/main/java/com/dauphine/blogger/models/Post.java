@@ -1,6 +1,7 @@
 package com.dauphine.blogger.models;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 public class Post {
@@ -8,8 +9,15 @@ public class Post {
     private String title;
     private String content;
     private Timestamp created_date;
-    private int category_id;
+    private UUID categoryId;
 
+    public Post(UUID id, String title, String content, UUID categoryId){
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.categoryId = categoryId;
+        setCreated_date();
+    }
     public UUID getId() {
         return id;
     }
@@ -38,15 +46,16 @@ public class Post {
         return created_date;
     }
 
-    public void setCreated_date(Timestamp created_date) {
-        this.created_date = created_date;
+    public void setCreated_date() {
+        this.created_date=new Timestamp(Instant.now().toEpochMilli());
+
     }
 
-    public int getCategory_id() {
-        return category_id;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 }

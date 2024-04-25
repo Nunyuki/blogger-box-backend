@@ -6,7 +6,7 @@ public class UpdatePostRequest {
 
     private String title;
     private String content;
-    private UUID category_id;
+    private UUID categoryId;
 
     public String getTitle() {
         return title;
@@ -24,11 +24,11 @@ public class UpdatePostRequest {
         this.content = content;
     }
 
-    public UUID getCategory_id() {
-        return category_id;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(UUID category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 }

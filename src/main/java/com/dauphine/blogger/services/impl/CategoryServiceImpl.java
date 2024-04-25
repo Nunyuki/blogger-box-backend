@@ -18,8 +18,6 @@ public class CategoryServiceImpl implements CategoryService {
         temporaryCategories.add(new Category(UUID.randomUUID(), "my first category"));
         temporaryCategories.add(new Category(UUID.randomUUID(), "my second category"));
         temporaryCategories.add(new Category(UUID.randomUUID(), "my third category"));
-
-
     }
     @Override
     public List<Category> retrieveAllCategories() {
@@ -49,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(UUID id) {
+
         temporaryCategories.removeIf(category -> id.equals(category.getId()));
     }
 }

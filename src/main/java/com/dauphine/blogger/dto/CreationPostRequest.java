@@ -11,7 +11,7 @@ public class CreationPostRequest {
 
     private String title;
     private String content;
-    private UUID category_id;
+    private UUID categoryId;
 
     public String getTitle() {
         return title;
@@ -29,11 +29,11 @@ public class CreationPostRequest {
         this.content = content;
     }
 
-    public UUID getCategory_id() {
-        return category_id;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(UUID category_id) {
-        this.category_id = category_id;
+    public void setCategory_id(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 }
