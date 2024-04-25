@@ -3,6 +3,7 @@ package com.dauphine.blogger.controllers;
 import com.dauphine.blogger.dto.CreationCategoryRequest;
 import com.dauphine.blogger.dto.UpdateCategoryRequest;
 import com.dauphine.blogger.models.Category;
+import com.dauphine.blogger.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/v1/categories")
 public class CategoryController {
-    List<Category> temporaryCategories = new ArrayList<>();
+
+    private final CategoryService service;
+
+    public CategoryController(CategoryService service){
+        this.service = service;
+    }
 
     @GetMapping("/")
     @Operation(
@@ -22,7 +28,7 @@ public class CategoryController {
             description = "Returns a list of all categories"
     )
     public List<Category> retrieveAllCategories() {
-        return temporaryCategories;
+        return service.retrieveAllCategories();
     }
 
     @GetMapping("/{id}")
@@ -33,8 +39,7 @@ public class CategoryController {
     public Category retrieveCategory(
             @Parameter(description = "id of the category")
             @PathVariable UUID id) {
-        //TODO
-        return null;
+        return service.retrieveCategory(id);
     }
 
     @PostMapping("/")
@@ -42,15 +47,11 @@ public class CategoryController {
             summary = "Create a new category endpoint",
             description = "Create a new category '{title}' by request body"
     )
-    public String createCategory(
+    public Category createCategory(
             @Parameter(description = "Title of the category")
             @RequestBody CreationCategoryRequest categoryRequest) {
 
-        Category category = new Category(UUID.randomUUID());
-        category.setTitle(categoryRequest.getTitle());
-        temporaryCategories.add(category);
-
-        return "Create a category with \nid = '%S'\ntitle = '%s'\n" .formatted(category.getId(),category.getTitle());
+        return service.createCategory(categoryRequest.getTitle());
     }
 
     @PutMapping("/{id}")
@@ -58,12 +59,12 @@ public class CategoryController {
             summary = "Update category's title endpoint",
             description = "Update '{title}' by request body"
     )
-    public String updateTitle(
+    public Category updateTitle(
             @Parameter(description = "Give the new title of the category")
             @PathVariable UUID id,
             @RequestBody UpdateCategoryRequest categoryRequest){
-        //TODO
-        return "Update category '%s' with title '%s'".formatted(id, categoryRequest.getTitle());
+
+        return service.updateTitle(id,categoryRequest.getTitle());
     }
 
     @DeleteMapping("/{id}")
@@ -71,10 +72,9 @@ public class CategoryController {
             summary = "Delete category endpoint",
             description = "Delete a category by '{id}'"
     )
-    public String delete(
+    public void deleteCategory(
             @Parameter(description = "Give the id of the category to delete")
             @PathVariable UUID id){
-        // TODO
-        return "Delete category '%s' with the title".formatted(id,"");
+        service.deleteCategory(id);
     }
 }
