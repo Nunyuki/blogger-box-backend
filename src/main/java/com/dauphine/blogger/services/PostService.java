@@ -10,7 +10,7 @@ public interface PostService {
     List<Post> retrieveAllPostByCategory(Category category);
     List<Post> retrieveAllPostByDate();
     Post  retrievePost(UUID id);
-    Post createPost(String title, String content, UUID categoryId);
+    Post createPost(String title, String content, Category category);
     Post update(UUID id, String title, String content);
     void delete(UUID id);
 }
