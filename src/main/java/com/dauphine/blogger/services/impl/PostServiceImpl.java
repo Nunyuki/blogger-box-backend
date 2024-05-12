@@ -6,10 +6,7 @@ import com.dauphine.blogger.repositories.PostRepository;
 import com.dauphine.blogger.services.PostService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -47,8 +44,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post retrievePost(UUID id) {
-        return repository.findById(id).orElse(null);
+        //return repository.findById(id).orElse(null);
         //return temporaryPost.stream().filter(post -> id.equals(post.getId())).findFirst().orElse(null);
+        final Optional<Post> postOptional = repository.findById(id);
+        return postOptional.orElse(null);
     }
 
     @Override

@@ -14,7 +14,7 @@ public class Category {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "tite")
+    @Column(name = "name")
     private String title;
 
     public Category(){

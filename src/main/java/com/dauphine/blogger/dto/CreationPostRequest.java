@@ -1,5 +1,6 @@
 package com.dauphine.blogger.dto;
 
+import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.models.Post;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,7 @@ public class CreationPostRequest {
 
     private String title;
     private String content;
-    private UUID categoryId;
+    private Category category;
 
     public String getTitle() {
         return title;
@@ -29,11 +30,11 @@ public class CreationPostRequest {
         this.content = content;
     }
 
-    public UUID getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory_id(UUID categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category categoryId) {
+        this.category = category;
     }
 }

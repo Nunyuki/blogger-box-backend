@@ -2,6 +2,7 @@ package com.dauphine.blogger.controllers;
 
 import com.dauphine.blogger.dto.CreationPostRequest;
 import com.dauphine.blogger.dto.UpdatePostRequest;
+import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.models.Post;
 import com.dauphine.blogger.services.CategoryService;
 import com.dauphine.blogger.services.PostService;
@@ -32,7 +33,7 @@ public class PostController {
             @Parameter(description = "Title of the post")
             @RequestBody CreationPostRequest postRequest) {
 
-        return service.createPost(postRequest.getTitle(),postRequest.getContent(),postRequest.getCategoryId());
+        return service.createPost(postRequest.getTitle(),postRequest.getContent(),postRequest.getCategory());
    }
 
     @PatchMapping("/{id}/")
@@ -74,8 +75,8 @@ public class PostController {
     )
     public List<Post> retrieveAllPostByCategory(
             @Parameter (description="Category id wanted")
-            @PathVariable UUID categoryId
+            @PathVariable Category category
     ) {
-        return service.retrieveAllPostByCategory(categoryId);
+        return service.retrieveAllPostByCategory(category);
     }
 }

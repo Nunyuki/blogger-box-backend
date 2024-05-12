@@ -7,21 +7,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository repository;
+    private final CategoryRepository categoryRepository;
     //private final List<Category> temporaryCategories;
 
-    public CategoryServiceImpl(CategoryRepository repository){
+    public CategoryServiceImpl(CategoryRepository repository, CategoryRepository categoryRepository){
         /*temporaryCategories = new ArrayList<>();
         temporaryCategories.add(new Category(UUID.randomUUID(), "my first category"));
         temporaryCategories.add(new Category(UUID.randomUUID(), "my second category"));
         temporaryCategories.add(new Category(UUID.randomUUID(), "my third category"));*/
         this.repository = repository;
-
+        this.categoryRepository = categoryRepository;
     }
     @Override
     public List<Category> retrieveAllCategories() {
@@ -32,7 +34,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category retrieveCategory(UUID id) {
         //return temporaryCategories.stream().filter(category -> id.equals(category.getId())).findFirst().orElse(null);
-        return repository.findById(id).orElse(null);
+        //return repository.findById(id).orElse(null);
+
+        final Optional<Category> categoryOptional = categoryRepository.findById(id);
+        return categoryOptional.orElse(null);
     }
 
     @Override
