@@ -13,5 +13,5 @@ public interface CategoryService {
     void deleteCategory(UUID id);
 
 
-
+    List<Category> findAllLikeTitle(String title);
 }

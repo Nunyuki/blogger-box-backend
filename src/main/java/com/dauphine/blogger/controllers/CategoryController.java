@@ -4,6 +4,7 @@ import com.dauphine.blogger.dto.CreationCategoryRequest;
 import com.dauphine.blogger.dto.UpdateCategoryRequest;
 import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.services.CategoryService;
+import com.dauphine.blogger.services.impl.CategoryServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +18,24 @@ import java.util.UUID;
 public class CategoryController {
 
     private final CategoryService service;
+    private final CategoryServiceImpl categoryServiceImpl;
 
-    public CategoryController(CategoryService service){
+    public CategoryController(CategoryService service, CategoryServiceImpl categoryServiceImpl){
         this.service = service;
+        this.categoryServiceImpl = categoryServiceImpl;
     }
 
     @GetMapping("/")
     @Operation(
             summary = "Retrieve all categories endpoint",
-            description = "Returns a list of all categories"
+            description = "Returns a list of all categories or filter by name"
     )
-    public List<Category> retrieveAllCategories() {
-        return service.retrieveAllCategories();
+    public List<Category> retrieveAllCategories(@RequestParam(required = false) String name) {
+        List<Category> categories = name == null || name.isBlank()
+                ? service.retrieveAllCategories()
+                : service.findAllLikeTitle(name);
+
+        return categories;
     }
 
     @GetMapping("/{id}")
