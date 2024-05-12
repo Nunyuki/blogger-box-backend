@@ -59,13 +59,16 @@ public class PostController {
         service.delete(id);
     }
 
-    @GetMapping("/")
+    @GetMapping("/topics")
     @Operation(
-            summary = "Retrieve all posts ordered by created_date endpoint",
-            description = "Returns a list of all posts"
+            summary = "Retrieve all posts ordered by created_date endpoint ",
+            description = "Returns a list of all posts filter like name or content"
     )
-    public List<Post> retrieveAllPostByDate(@RequestParam("date") String date) {
-        return service.retrieveAllPostByDate();
+    public List<Post> retrieveAllPostByDate(@RequestParam(required = false)String value,@RequestParam("date") String date) {
+        List<Post> posts = value == null || value.isBlank()
+                ? service.retrieveAllPostByDate()
+                : service.findAllPostByTitleOrContent(value,value);
+        return posts;
     }
 
     @GetMapping("/{categoryId}/posts")

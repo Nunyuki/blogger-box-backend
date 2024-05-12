@@ -82,4 +82,9 @@ public class PostServiceImpl implements PostService {
         repository.deleteById(id);
         //temporaryPost.removeIf(post -> id.equals(post.getId()));
     }
+
+    @Override
+    public List<Post> findAllPostByTitleOrContent(String title, String content) {
+        return repository.findAllPostByTitleOrContent(title,content);
+    }
 }

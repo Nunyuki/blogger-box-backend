@@ -13,4 +13,6 @@ public interface PostService {
     Post createPost(String title, String content, Category category);
     Post update(UUID id, String title, String content);
     void delete(UUID id);
+
+    List<Post> findAllPostByTitleOrContent(String title, String content);
 }
