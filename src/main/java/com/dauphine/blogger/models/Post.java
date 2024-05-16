@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -22,7 +24,7 @@ public class Post {
     private String content;
 
     @Column(name="created_date")
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     @ManyToOne
     @JoinColumn(name="category_id")
@@ -31,11 +33,11 @@ public class Post {
     public Post(){
 
     }
-    public Post(UUID id, String title, String content, Category category){
+    public Post(UUID id, String title, String content, Category category, Date createdDate){
         this.id = id;
         this.title = title;
         this.content = content;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = createdDate;
         this.category = category;
     }
     public UUID getId() {
@@ -62,11 +64,11 @@ public class Post {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime newDate) {
+    public void setCreatedDate(Date newDate) {
         this.createdDate = newDate;
     }
 

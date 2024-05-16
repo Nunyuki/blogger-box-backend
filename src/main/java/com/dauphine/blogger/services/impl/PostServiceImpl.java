@@ -58,7 +58,7 @@ public class PostServiceImpl implements PostService {
         temporaryPost.add(post);
         return post;*/
 
-        Post post = new Post(UUID.randomUUID(),title,content,category);
+        Post post = new Post(UUID.randomUUID(),title,content,category,new Date());
         return repository.save(post);
     }
 
