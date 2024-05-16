@@ -4,12 +4,10 @@ import com.dauphine.blogger.dto.CreationCategoryRequest;
 import com.dauphine.blogger.dto.UpdateCategoryRequest;
 import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.services.CategoryService;
-import com.dauphine.blogger.services.impl.CategoryServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +16,9 @@ import java.util.UUID;
 public class CategoryController {
 
     private final CategoryService service;
-    private final CategoryServiceImpl categoryServiceImpl;
 
-    public CategoryController(CategoryService service, CategoryServiceImpl categoryServiceImpl){
+    public CategoryController(CategoryService service){
         this.service = service;
-        this.categoryServiceImpl = categoryServiceImpl;
     }
 
     @GetMapping("/")
@@ -30,10 +26,10 @@ public class CategoryController {
             summary = "Retrieve all categories endpoint",
             description = "Returns a list of all categories or filter by name"
     )
-    public List<Category> retrieveAllCategories(@RequestParam(required = false) String name) {
+    public List<Category> getAll(@RequestParam(required = false) String name) {
         List<Category> categories = name == null || name.isBlank()
-                ? service.retrieveAllCategories()
-                : service.findAllLikeTitle(name);
+                ? service.getAll()
+                : service.findAllLikeName(name);
 
         return categories;
     }
@@ -43,10 +39,10 @@ public class CategoryController {
             summary = "Retrieve specific category endpoint",
             description = "Returns a specific category by {id}"
     )
-    public Category retrieveCategory(
+    public Category retrieveCategoryById(
             @Parameter(description = "id of the category")
             @PathVariable UUID id) {
-        return service.retrieveCategory(id);
+        return service.getById(id);
     }
 
     @PostMapping("/")
@@ -58,7 +54,7 @@ public class CategoryController {
             @Parameter(description = "Title of the category")
             @RequestBody CreationCategoryRequest categoryRequest) {
 
-        return service.createCategory(categoryRequest.getTitle());
+        return service.create(categoryRequest.getTitle());
     }
 
     @PutMapping("/{id}")
@@ -66,12 +62,12 @@ public class CategoryController {
             summary = "Update category's title endpoint",
             description = "Update '{title}' by request body"
     )
-    public Category updateTitle(
+    public Category updateCategory(
             @Parameter(description = "Give the new title of the category")
             @PathVariable UUID id,
             @RequestBody UpdateCategoryRequest categoryRequest){
 
-        return service.updateTitle(id,categoryRequest.getTitle());
+        return service.updateName(id,categoryRequest.getTitle());
     }
 
     @DeleteMapping("/{id}")
@@ -82,6 +78,6 @@ public class CategoryController {
     public void deleteCategory(
             @Parameter(description = "Give the id of the category to delete")
             @PathVariable UUID id){
-        service.deleteCategory(id);
+        service.deleteById(id);
     }
 }

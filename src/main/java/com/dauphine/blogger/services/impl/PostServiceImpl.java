@@ -10,7 +10,6 @@ import java.util.*;
 
 @Service
 public class PostServiceImpl implements PostService {
-
     private final PostRepository repository;
     //private final List<Post> temporaryPost;
 
@@ -22,11 +21,12 @@ public class PostServiceImpl implements PostService {
         temporaryPost.add(new Post(UUID.randomUUID(), "my first post","content 1",category1.getId()));
         temporaryPost.add(new Post(UUID.randomUUID(), "my second post","content 2",category2.getId()));
         temporaryPost.add(new Post(UUID.randomUUID(), "my third post","content 3",category1.getId()));*/
+
         this.repository = repository;
     }
 
     @Override
-    public List<Post> retrieveAllPostByCategory(Category category) {
+    public List<Post> getAllByCategoryId(Category category) {
         /* List<Post> postByCategory = new ArrayList<>();
         for(Post p:temporaryPost){
             if (p.getCategory()==category){
@@ -34,27 +34,31 @@ public class PostServiceImpl implements PostService {
             }
         }
         return postByCategory;*/
+
         return repository.findAllByCategory(category);
     }
 
     @Override
-    public List<Post> retrieveAllPostByDate() {
+    public List<Post> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Post retrievePost(UUID id) {
+    public Post getById(UUID id) {
         //return repository.findById(id).orElse(null);
         //return temporaryPost.stream().filter(post -> id.equals(post.getId())).findFirst().orElse(null);
+
         final Optional<Post> postOptional = repository.findById(id);
         return postOptional.orElse(null);
     }
 
     @Override
-    public Post createPost(String title, String content, Category category) {
-        Post post = new Post(UUID.randomUUID(),title,content, category);
-        /*temporaryPost.add(post);
+    public Post create(String title, String content, Category category) {
+        /*Post post = new Post(UUID.randomUUID(),title,content, category);
+        temporaryPost.add(post);
         return post;*/
+
+        Post post = new Post(UUID.randomUUID(),title,content,category);
         return repository.save(post);
     }
 
@@ -67,20 +71,22 @@ public class PostServiceImpl implements PostService {
             post.setCreated_date();
         }
         return post;*/
-        Post post = retrievePost(id);
+
+        Post post = getById(id);
         if(post == null){
             return null;
         }
+
         post.setTitle(title);
         post.setContent(content);
-        post.setCreated_date();
         return repository.save(post);
     }
 
     @Override
-    public void delete(UUID id) {
-        repository.deleteById(id);
+    public void deleteById(UUID id) {
         //temporaryPost.removeIf(post -> id.equals(post.getId()));
+
+        repository.deleteById(id);
     }
 
     @Override

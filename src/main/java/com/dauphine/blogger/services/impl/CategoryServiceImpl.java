@@ -13,63 +13,68 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository repository;
-    private final CategoryRepository categoryRepository;
     //private final List<Category> temporaryCategories;
 
-    public CategoryServiceImpl(CategoryRepository repository, CategoryRepository categoryRepository){
+    public CategoryServiceImpl(CategoryRepository repository){
         /*temporaryCategories = new ArrayList<>();
         temporaryCategories.add(new Category(UUID.randomUUID(), "my first category"));
         temporaryCategories.add(new Category(UUID.randomUUID(), "my second category"));
         temporaryCategories.add(new Category(UUID.randomUUID(), "my third category"));*/
+
         this.repository = repository;
-        this.categoryRepository = categoryRepository;
     }
+
     @Override
-    public List<Category> retrieveAllCategories() {
+    public List<Category> getAll() {
         //return temporaryCategories;
+
         return repository.findAll();
     }
 
     @Override
-    public Category retrieveCategory(UUID id) {
+    public Category getById(UUID id) {
         //return temporaryCategories.stream().filter(category -> id.equals(category.getId())).findFirst().orElse(null);
         //return repository.findById(id).orElse(null);
 
-        final Optional<Category> categoryOptional = categoryRepository.findById(id);
+        final Optional<Category> categoryOptional = repository.findById(id);
         return categoryOptional.orElse(null);
     }
 
     @Override
-    public Category createCategory(String title) {
-        Category category = new Category(UUID.randomUUID(),title);
-        /*temporaryCategories.add(category);
+    public Category create(String name) {
+        /*Category category = new Category(UUID.randomUUID(),name);
+        temporaryCategories.add(category);
         return category;*/
+
+        Category category = new Category(name);
         return repository.save(category);
     }
 
     @Override
-    public Category updateTitle(UUID id, String title) {
+    public Category updateName(UUID id, String name) {
         /*Category category = temporaryCategories.stream().filter(c -> id.equals(c.getId())).findFirst().orElse(null);
         if(category != null){
             category.setTitle(title);
         }
         return category;*/
-        Category category = retrieveCategory(id);
+
+        Category category = getById(id);
         if(category == null){
             return null;
         }
-        category.setTitle(title);
+        category.setName(name);
         return repository.save(category);
     }
 
     @Override
-    public void deleteCategory(UUID id) {
+    public void deleteById(UUID id) {
         //temporaryCategories.removeIf(category -> id.equals(category.getId()));
+
         repository.deleteById(id);
     }
 
     @Override
-    public List<Category> findAllLikeTitle(String title) {
-        return repository.findAllLikeTitle(title);
+    public List<Category> findAllLikeName(String name) {
+        return repository.findAllLikeTitle(name);
     }
 }

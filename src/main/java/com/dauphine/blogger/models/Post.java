@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name="post")
 public class Post {
+
     @Id
     @Column(name="id")
     private UUID id;
@@ -20,7 +22,7 @@ public class Post {
     private String content;
 
     @Column(name="created_date")
-    private Timestamp created_date;
+    private LocalDateTime createdDate;
 
     @ManyToOne
     @JoinColumn(name="category_id")
@@ -33,8 +35,8 @@ public class Post {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.createdDate = LocalDateTime.now();
         this.category = category;
-        setCreated_date();
     }
     public UUID getId() {
         return id;
@@ -60,20 +62,19 @@ public class Post {
         this.content = content;
     }
 
-    public Timestamp getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date() {
-        this.created_date=new Timestamp(Instant.now().toEpochMilli());
-
+    public void setCreatedDate(LocalDateTime newDate) {
+        this.createdDate = newDate;
     }
 
     public Category getCategory() {
         return category;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.category = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

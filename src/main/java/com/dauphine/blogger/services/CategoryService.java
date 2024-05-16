@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CategoryService {
-    List<Category> retrieveAllCategories();
-    Category retrieveCategory(UUID id);
-    Category createCategory(String title);
-    Category updateTitle(UUID id, String title);
-    void deleteCategory(UUID id);
-
-
-    List<Category> findAllLikeTitle(String title);
+    List<Category> getAll();
+    Category getById(UUID id);
+    Category create(String name);
+    Category updateName(UUID id, String name);
+    void deleteById(UUID id);
+    List<Category> findAllLikeName(String name);
 }

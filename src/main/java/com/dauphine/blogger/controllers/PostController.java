@@ -33,7 +33,7 @@ public class PostController {
             @Parameter(description = "Title of the post")
             @RequestBody CreationPostRequest postRequest) {
 
-        return service.createPost(postRequest.getTitle(),postRequest.getContent(),postRequest.getCategory());
+        return service.create(postRequest.getTitle(),postRequest.getContent(),postRequest.getCategory());
    }
 
     @PatchMapping("/{id}/")
@@ -41,10 +41,9 @@ public class PostController {
             summary = "Update post's endpoint",
             description = "Update by request body"
     )
-    public Post update(@Parameter(description = "Give the new title of the post")
+    public Post updatePost(@Parameter(description = "Give the new title of the post")
                              @PathVariable UUID id,
                          @RequestBody UpdatePostRequest postRequest){
-        //TODO
         return service.update(id,postRequest.getTitle(),postRequest.getContent());
     }
 
@@ -53,33 +52,33 @@ public class PostController {
             summary = "Delete post endpoint",
             description = "Delete a post by '{id}'"
     )
-    public void delete(
+    public void deletePost(
             @Parameter(description = "Give the id of the post to delete")
             @PathVariable UUID id){
-        service.delete(id);
+        service.deleteById(id);
     }
 
-    @GetMapping("/topics")
+    @GetMapping()
     @Operation(
             summary = "Retrieve all posts ordered by created_date endpoint ",
             description = "Returns a list of all posts filter like name or content"
     )
-    public List<Post> retrieveAllPostByDate(@RequestParam(required = false)String value,@RequestParam("date") String date) {
+    public List<Post> retrieveAllPosts(@RequestParam(required = false)String value) {
         List<Post> posts = value == null || value.isBlank()
-                ? service.retrieveAllPostByDate()
+                ? service.getAll()
                 : service.findAllPostByTitleOrContent(value,value);
         return posts;
     }
 
-    @GetMapping("/{categoryId}/posts")
+    @GetMapping("/{categoryId}/{id}")
     @Operation(
             summary = "Retrieve all posts ordered by date endpoint",
             description = "Returns a list of all posts"
     )
-    public List<Post> retrieveAllPostByCategory(
+    public List<Post> retrievePostsByCategory(
             @Parameter (description="Category id wanted")
             @PathVariable Category category
     ) {
-        return service.retrieveAllPostByCategory(category);
+        return service.getAllByCategoryId(category);
     }
 }

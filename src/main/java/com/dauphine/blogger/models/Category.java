@@ -10,12 +10,13 @@ import java.util.UUID;
 @Entity
 @Table(name="category")
 public class Category {
+
     @Id
     @Column(name = "id")
     private UUID id;
 
     @Column(name = "name")
-    private String title;
+    private String name;
 
     public Category(){
 
@@ -23,9 +24,14 @@ public class Category {
     public Category(UUID id) {
         this.id = id;
     }
-    public Category(UUID id, String title) {
+
+    public Category(String name) {
+        this.name=name;
+    }
+
+    public Category(UUID id, String name) {
         this.id = id;
-        this.title=title;
+        this.name=name;
     }
 
     public UUID getId() {
@@ -36,11 +42,11 @@ public class Category {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 }
