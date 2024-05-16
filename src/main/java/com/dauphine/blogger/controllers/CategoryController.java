@@ -1,7 +1,5 @@
 package com.dauphine.blogger.controllers;
 
-import com.dauphine.blogger.dto.CreationCategoryRequest;
-import com.dauphine.blogger.dto.UpdateCategoryRequest;
 import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,69 +13,75 @@ import java.util.UUID;
 @RequestMapping("/v1/categories")
 public class CategoryController {
 
-    private final CategoryService service;
+    private final CategoryService categoryService;
 
-    public CategoryController(CategoryService service){
-        this.service = service;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
-    @GetMapping("/")
+    /*@GetMapping("")
     @Operation(
-            summary = "Retrieve all categories endpoint",
-            description = "Returns a list of all categories or filter by name"
+            summary = "Retrieve all categories",
+            description = "Returns all the categories"
     )
-    public List<Category> getAll(@RequestParam(required = false) String name) {
-        List<Category> categories = name == null || name.isBlank()
-                ? service.getAll()
-                : service.findAllLikeName(name);
+    public List<Category> retrieveAllCategories() {
+        return categoryService.getAll();
+    }*/
 
-        return categories;
+    @GetMapping
+    public List<Category> getAll() {
+        return categoryService.getAll();
+    }
+
+    public List<Category> getAllByName(@RequestParam String name) {
+        return name == null || name.isBlank()
+                ? categoryService.getAll()
+                : categoryService.findAllLikeName(name);
     }
 
     @GetMapping("/{id}")
     @Operation(
-            summary = "Retrieve specific category endpoint",
-            description = "Returns a specific category by {id}"
+            summary = "Retrieve a category by id",
+            description = "Returns a category by path variable"
     )
     public Category retrieveCategoryById(
-            @Parameter(description = "id of the category")
+            @Parameter(description = "Id of the category to retrieve")
             @PathVariable UUID id) {
-        return service.getById(id);
+        return categoryService.getById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @Operation(
-            summary = "Create a new category endpoint",
-            description = "Create a new category '{title}' by request body"
+            summary = "Create a new category",
+            description = "Creating a new category"
     )
     public Category createCategory(
-            @Parameter(description = "Title of the category")
-            @RequestBody CreationCategoryRequest categoryRequest) {
-
-        return service.create(categoryRequest.getTitle());
+            @Parameter(description = "Name of the category")
+            @RequestBody String name) {
+        return categoryService.create(name);
     }
 
     @PutMapping("/{id}")
     @Operation(
-            summary = "Update category's title endpoint",
-            description = "Update '{title}' by request body"
+            summary = "Update category",
+            description = "Update category by id"
     )
     public Category updateCategory(
-            @Parameter(description = "Give the new title of the category")
+            @Parameter(description = "Id of the category to be updated")
             @PathVariable UUID id,
-            @RequestBody UpdateCategoryRequest categoryRequest){
-
-        return service.updateName(id,categoryRequest.getTitle());
+            @Parameter(description = "Name of the category")
+            @RequestBody String name) {
+        return categoryService.updateName(id, name);
     }
 
     @DeleteMapping("/{id}")
     @Operation(
-            summary = "Delete category endpoint",
-            description = "Delete a category by '{id}'"
+            summary = "Delete category",
+            description = "Delete category by id"
     )
     public void deleteCategory(
-            @Parameter(description = "Give the id of the category to delete")
-            @PathVariable UUID id){
-        service.deleteById(id);
+            @Parameter(description = "Id of the category to delete")
+            @PathVariable UUID id) {
     }
+
 }
