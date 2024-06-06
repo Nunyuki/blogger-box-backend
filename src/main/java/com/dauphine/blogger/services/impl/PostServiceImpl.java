@@ -1,8 +1,12 @@
 package com.dauphine.blogger.services.impl;
 
+import com.dauphine.blogger.dto.CreationPostRequest;
+import com.dauphine.blogger.exception.CategoryNotFoundByIdException;
+import com.dauphine.blogger.exception.PostNotFoundByIdException;
 import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.models.Post;
 import com.dauphine.blogger.repositories.PostRepository;
+import com.dauphine.blogger.services.CategoryService;
 import com.dauphine.blogger.services.PostService;
 import org.springframework.stereotype.Service;
 
@@ -10,68 +14,40 @@ import java.util.*;
 
 @Service
 public class PostServiceImpl implements PostService {
-    private final PostRepository repository;
-    //private final List<Post> temporaryPost;
+    private final PostRepository postRepository;
+    private CategoryService categoryService;
 
-    public PostServiceImpl(PostRepository repository){
-        /*temporaryPost = new ArrayList<>();
-        Category category1 = new Category(UUID.randomUUID(),"Category1");
-        Category category2 = new Category(UUID.randomUUID(),"Category2");
-
-        temporaryPost.add(new Post(UUID.randomUUID(), "my first post","content 1",category1.getId()));
-        temporaryPost.add(new Post(UUID.randomUUID(), "my second post","content 2",category2.getId()));
-        temporaryPost.add(new Post(UUID.randomUUID(), "my third post","content 3",category1.getId()));*/
-
-        this.repository = repository;
+    public PostServiceImpl(PostRepository postRepository, CategoryService categoryService){
+        this.postRepository = postRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
-    public List<Post> getAllByCategoryId(Category category) {
-        /* List<Post> postByCategory = new ArrayList<>();
-        for(Post p:temporaryPost){
-            if (p.getCategory()==category){
-                postByCategory.add(p);
-            }
-        }
-        return postByCategory;*/
-
-        return repository.findAllByCategory(category);
+    public List<Post> getAllByCategoryId(Category category) throws CategoryNotFoundByIdException {
+        categoryService.getById(category.getId());
+        return postRepository.findAllByCategory(category);
     }
 
     @Override
     public List<Post> getAll() {
-        return repository.findAll();
+        return postRepository.findAll();
     }
 
     @Override
-    public Post getById(UUID id) {
-        //return repository.findById(id).orElse(null);
-        //return temporaryPost.stream().filter(post -> id.equals(post.getId())).findFirst().orElse(null);
-
-        final Optional<Post> postOptional = repository.findById(id);
-        return postOptional.orElse(null);
+    public Post getById(UUID id) throws PostNotFoundByIdException {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundByIdException(id));
     }
 
     @Override
-    public Post create(String title, String content, Category category) {
-        /*Post post = new Post(UUID.randomUUID(),title,content, category);
-        temporaryPost.add(post);
-        return post;*/
-
-        Post post = new Post(UUID.randomUUID(),title,content,category,new Date());
-        return repository.save(post);
+    public Post create(CreationPostRequest postRequest) throws CategoryNotFoundByIdException {
+        Post p = new Post(UUID.randomUUID(), postRequest.getTitle(),postRequest.getContent(),
+                categoryService.getById(postRequest.getCategoryId()),new Date());
+        return postRepository.save(p);
     }
 
     @Override
-    public Post update(UUID id, String title, String content) {
-        /*Post post = temporaryPost.stream().filter(p -> id.equals(p.getId())).findFirst().orElse(null);
-        if(post != null){
-            post.setTitle(title);
-            post.setContent(content);
-            post.setCreated_date();
-        }
-        return post;*/
-
+    public Post update(UUID id, String title, String content) throws PostNotFoundByIdException {
         Post post = getById(id);
         if(post == null){
             return null;
@@ -79,18 +55,18 @@ public class PostServiceImpl implements PostService {
 
         post.setTitle(title);
         post.setContent(content);
-        return repository.save(post);
+        return postRepository.save(post);
     }
 
     @Override
-    public void deleteById(UUID id) {
-        //temporaryPost.removeIf(post -> id.equals(post.getId()));
-
-        repository.deleteById(id);
+    public boolean deleteById(UUID id) throws PostNotFoundByIdException {
+        getById(id);
+        postRepository.deleteById(id);
+        return true;
     }
 
     @Override
     public List<Post> findAllPostByTitleOrContent(String title, String content) {
-        return repository.findAllPostByTitleOrContent(title,content);
+        return postRepository.findAllPostByTitleOrContent(title,content);
     }
 }

@@ -12,7 +12,7 @@ public class CreationPostRequest {
 
     private String title;
     private String content;
-    private Category category;
+    private UUID categoryId;
 
     public String getTitle() {
         return title;
@@ -30,11 +30,11 @@ public class CreationPostRequest {
         this.content = content;
     }
 
-    public Category getCategory() {
-        return category;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category categoryId) {
-        this.category = category;
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 }

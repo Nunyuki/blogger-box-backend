@@ -26,6 +26,7 @@ public class Category {
     }
 
     public Category(String name) {
+        this.id = UUID.randomUUID();
         this.name=name;
     }
 
