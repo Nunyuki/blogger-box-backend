@@ -14,6 +14,12 @@ public class CreationPostRequest {
     private String content;
     private UUID categoryId;
 
+    public CreationPostRequest(String title, String content, UUID categoryId) {
+        this.title = title;
+        this.content = content;
+        this.categoryId = categoryId;
+    }
+
     public String getTitle() {
         return title;
     }

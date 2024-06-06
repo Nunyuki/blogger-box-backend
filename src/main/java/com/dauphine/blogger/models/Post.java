@@ -40,6 +40,12 @@ public class Post {
         this.createdDate = createdDate;
         this.category = category;
     }
+
+    public Post(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+
     public UUID getId() {
         return id;
     }

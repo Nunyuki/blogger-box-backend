@@ -15,11 +15,9 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository repository;
-    private final CategoryRepository categoryRepository;
 
-    public CategoryServiceImpl(CategoryRepository repository, CategoryRepository categoryRepository){
+    public CategoryServiceImpl(CategoryRepository repository){
                 this.repository = repository;
-        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -35,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category create(String name) throws CategoryNameAlreadyExistsException{
-        if(categoryRepository.findAllLikeTitle(name)==null){
+        if(!repository.findAllLikeTitle(name).isEmpty()){
             throw new CategoryNameAlreadyExistsException(name);
         }
         Category category = new Category(name);
@@ -45,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category updateName(UUID id, String name) throws CategoryNotFoundByIdException, CategoryNameAlreadyExistsException {
         Category category = getById(id);
-        if(repository.findAllLikeTitle(name) != null){
+        if (!repository.findAllLikeTitle(name).isEmpty()){
             throw new CategoryNameAlreadyExistsException(name);
         }
         category.setName(name);
