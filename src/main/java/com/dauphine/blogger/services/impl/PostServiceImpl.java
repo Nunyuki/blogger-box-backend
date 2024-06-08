@@ -15,7 +15,7 @@ import java.util.*;
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public PostServiceImpl(PostRepository postRepository, CategoryService categoryService){
         this.postRepository = postRepository;
